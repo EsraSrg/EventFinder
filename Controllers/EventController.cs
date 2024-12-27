@@ -23,4 +23,10 @@ public async Task<IActionResult> Detail(int id){
     return View(foundEvent);
 
 }
+
+public IActionResult Create()
+{
+
+    return View();
+}
 }
