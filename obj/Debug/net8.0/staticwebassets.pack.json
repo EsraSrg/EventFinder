@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "c:\\Users\\Esra\\Desktop\\repos\\EventFinder\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Project-mvc-dotnet.bundle.scp.css",
-      "PackagePath": "staticwebassets\\Project-mvc-dotnet.bundle.scp.css"
+      "PackagePath": "staticwebassets\\Project-mvc-dotnet.cnb9hffch0.bundle.scp.css"
     },
     {
       "Id": "c:\\Users\\Esra\\Desktop\\repos\\EventFinder\\wwwroot\\css\\site.css",
@@ -247,6 +247,10 @@
     {
       "Id": "c:\\Users\\Esra\\Desktop\\repos\\EventFinder\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Project-mvc-dotnet.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Project-mvc-dotnet.Microsoft.AspNetCore.StaticWebAssets.props",
