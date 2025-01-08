@@ -17,3 +17,10 @@
     {
         return await _context.Events.Where(c=>c.Address.City.Contains(city)).ToListAsync();
     }
+## Cloudinary
+- dotnet add package CloudinaryDotNet --version 1.27.1
+- Images pulling from cloudinary server, not server.
+
+- `enctype="multipart/form-data"`, formun içeriğinin birden fazla bölümde gönderilmesini sağlar. Her bölüm, formdaki bir girdiyi temsil eder ve bu sayede metin ve dosya gibi farklı veri türleri bir arada gönderilebilir.
+- Image alanında type="file" olmalı
+- 

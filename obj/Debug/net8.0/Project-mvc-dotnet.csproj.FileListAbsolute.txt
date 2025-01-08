@@ -170,3 +170,5 @@ c:\Users\Esra\Desktop\repos\EventFinder\obj\Debug\net8.0\refint\Project-mvc-dotn
 c:\Users\Esra\Desktop\repos\EventFinder\obj\Debug\net8.0\Project-mvc-dotnet.pdb
 c:\Users\Esra\Desktop\repos\EventFinder\obj\Debug\net8.0\Project-mvc-dotnet.genruntimeconfig.cache
 c:\Users\Esra\Desktop\repos\EventFinder\obj\Debug\net8.0\ref\Project-mvc-dotnet.dll
+c:\Users\Esra\Desktop\repos\EventFinder\bin\Debug\net8.0\CloudinaryDotNet.dll
+c:\Users\Esra\Desktop\repos\EventFinder\bin\Debug\net8.0\Newtonsoft.Json.dll

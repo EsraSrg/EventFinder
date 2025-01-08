@@ -1,3 +1,5 @@
+using EventFinder.Helpers;
+using EventFinder.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using RunGroopWebApp.Data;
 
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IEventRepository,EventRepository>();
+builder.Services.AddScoped<IPhotoService,PhotoService>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
