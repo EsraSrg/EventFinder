@@ -29,6 +29,10 @@ public class EventRepository : IEventRepository
     {
         return await _context.Events.Include(a=>a.Address).FirstOrDefaultAsync(s=>s.Id==id); // get  event by id
     }
+      public async Task<Event> GetByIdAsyncNoTracking(int id)
+    {
+        return await _context.Events.Include(a=>a.Address).AsNoTracking().FirstOrDefaultAsync(s=>s.Id==id); // get  event by id
+    }
 
     public async Task<IEnumerable<Event>> GetEventByCity(string city)
     {
