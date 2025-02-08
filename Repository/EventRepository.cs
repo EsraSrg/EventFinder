@@ -11,7 +11,7 @@ public class EventRepository : IEventRepository
     public bool Add(Event foundEvent)
     {
         _context.Add(foundEvent);
-        return Save();
+        return Save(); //
     }
 
     public bool Delete(Event foundEvent)
