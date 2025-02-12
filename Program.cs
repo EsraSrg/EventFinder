@@ -11,10 +11,11 @@ builder.Services.AddScoped<IEventRepository,EventRepository>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-
-    options.UseSqlServer("Data Source=.;Initial Catalog=EventFinder;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;");
+    options.UseSqlServer(connectionString);
 });
 
 var app = builder.Build();
