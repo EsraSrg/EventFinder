@@ -1,7 +1,10 @@
+using EventFinder.Data;
 using EventFinder.Helpers;
 using EventFinder.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RunGroopWebApp.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,21 +14,29 @@ builder.Services.AddScoped<IEventRepository,EventRepository>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(connectionString);
+    options.UseSqlServer( builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+//  Identity servislerini ekle
+
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie();
 
 var app = builder.Build();
 
-Seed.SeedData(app);
 
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
-    // await Seed.SeedUsersAndRolesAsync(app);
-    Seed.SeedData(app);
+    await Seed.SeedUsersAndRolesAsync(app);
+    // Seed.SeedData(app);
 }
 
 // Configure the HTTP request pipeline.
@@ -42,6 +53,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
