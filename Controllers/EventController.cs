@@ -1,4 +1,5 @@
 using EventFinder.Interfaces;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -8,11 +9,13 @@ public class EventController : Controller
 {
     private readonly IEventRepository _eventRepository;
     private readonly IPhotoService _photoService;
-    public EventController(IEventRepository eventRepository, IPhotoService photoService)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public EventController(IEventRepository eventRepository, IPhotoService photoService, IHttpContextAccessor httpContextAccessor)
     {
 
         _eventRepository = eventRepository;
         _photoService = photoService;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<IActionResult> Index()
     {
@@ -30,8 +33,9 @@ public class EventController : Controller
 
     public IActionResult Create()
     {
-
-        return View();
+        var curUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+        var CreateEventViewModel = new CreateEventViewModel { AppUserId = curUserId };
+        return View(CreateEventViewModel);
     }
 
     [HttpPost]
@@ -46,6 +50,7 @@ public class EventController : Controller
                 Title = eventVM.Title,
                 Description = eventVM.Description,
                 Image = result.Url.ToString(),
+                AppUserId=eventVM.AppUserId,
                 Address = new Address
                 {
 

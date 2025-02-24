@@ -26,15 +26,20 @@
         <div class="card-body">
           <h5 class="card-title">@item.Title</h5>
           <p class="card-text">@item.Description</p>
-          <a  asp-controller="Event" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Go Details</a>
-            <a  asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-          <div>
+         <div class="btn-group">
+           <a  asp-controller="Event" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Go Details</a>
+         @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+         {
+            <a  asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <a  asp-controller="Event" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Delete</a>
+         }
+          </div>
             <small class="text-muted">@item.EventCategory</small>
 
           </div>
         </div>
       </div>
-    </div>
+   
 }
      
    

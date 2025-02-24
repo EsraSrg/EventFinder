@@ -6,5 +6,6 @@ public class CreateEventViewModel{
         public Address Address {get; set;}
         public IFormFile Image { get; set; }
          public EventCategory EventCategory { get; set; }
+         public string AppUserId { get; set; }
 
 }
