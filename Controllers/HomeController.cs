@@ -12,11 +12,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IEventRepository _eventRepository;
+    private readonly IConfiguration _config;
 
-    public HomeController(ILogger<HomeController> logger, IEventRepository eventRepository)
+    public HomeController(ILogger<HomeController> logger, IEventRepository eventRepository,IConfiguration config)
     {
         _logger = logger;
         _eventRepository = eventRepository;
+        _config=config;
     }
 
     public async Task<IActionResult> Index()
@@ -25,7 +27,7 @@ public class HomeController : Controller
         var homeViewModel = new HomeViewModel();
         try
         {
-            string url = "https://ipinfo.io?token=6f5323b799aac1";
+            string url = "https://ipinfo.io?token="+_config.GetValue<string>("IpInfo:Token");
             var info = new WebClient().DownloadString(url);
             ipInfo = JsonConvert.DeserializeObject<IPInfo>(info); // taking json and turning into object
             RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
