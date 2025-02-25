@@ -71,17 +71,19 @@ public class AccountController : Controller
         var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
         if (newUserResponse.Succeeded)
-        
-            await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-            return RedirectToAction("Index", "Event");
-        
-     
-    }
-       [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Event");
 
-        }
+            await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+        return RedirectToAction("Index", "Event");
+
+
+    }
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Event");
+
+    }
+
+ 
 }
