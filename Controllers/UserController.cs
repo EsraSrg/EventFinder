@@ -19,6 +19,7 @@ public class UserController : Controller
             {
                 Id=user.Id,
                 UserName=user.UserName,
+                ProfileImageUrl=user.ProfileImageUrl
 
             };
             result.Add(userViewModel);
