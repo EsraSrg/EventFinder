@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
 
     public bool Save()
     {
-        var saved = _context.SaveChanges();
+        var saved =  _context.SaveChanges();
         return saved > 0 ? true : false;
     }
 
@@ -45,4 +45,5 @@ public class UserRepository : IUserRepository
     {
         throw new NotImplementedException();
     }
+   
 }

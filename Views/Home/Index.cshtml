@@ -1,66 +1,63 @@
 ﻿@model HomeViewModel
-{
 
-    ViewData["Title"] = "Home Page"
+
+@{
+    ViewData["Title"] = "Home Page";
 }
 
-<section class="bg-dark space-lg" data-jarallax data-speed="0.2">
-    <img alt="Image" src="/img/photo-road.jpg" class="bg-image position-absolute opacity-20" />
-    <div class="container">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-12 col-md-6 col-lg-5 section-intro">
-                <h1 class="display-3 text-light">Platform form tech Communities</h1>
-                <span class="lead text-light">
-                    Buraya bir tanıtım yazısı yaz
-                </span>
-           
+<!-- Hero Section -->
+<section class="hero bg-dark position-relative d-flex align-items-center">
+    <div class="overlay"></div>
+    <img alt="Tech Event" src="/img/bg-image.jpg" class="bg-image position-absolute top-0 start-0 w-100 h-100 object-fit-cover">
+    <div class="container text-center text-light position-relative">
+        <h1 class="display-3 fw-light">Add & Discover Tech Events</h1>
+        <p class="lead">Discover the best tech events near you with EventFinder!</p>
+    </div>
 </section>
 
-<section>
+<!-- Event Listing Section -->
+<section class="py-5">
     <div class="container">
-        @if (Model.Events == null)
+        @if (Model.Events == null || !Model.Events.Any())
         {
-            <h1 class="fw-light text-center text-danger">
-                There are no tech events in your area! <a asp-controller="Event" asp-action="Login">Login</a> and create one!
-            </h1>
+            <h2 class="fw-light text-center text-danger">
+                There are no tech events in your area! <a asp-controller="Event" asp-action="Create">Create one</a> now!
+            </h2>
         }
         else
         {
-            <div class="row justify-content-between mb-5">
+            <div class="row justify-content-between mb-4">
                 <div class="col-auto">
-                    <h3 class="text-primary">tech events near @Model.City, @Model.State</h3>
+                    <h3 class="text-dark">Tech events near @Model.City, @Model.State</h3>
                 </div>
                 <div class="col-auto">
-                    <a href="#" class="btn btn-outline-primary">View all</a>
+                    <a asp-controller="Event" asp-action="Index" class="btn btn-outline-primary">View all Events</a>
                 </div>
             </div>
-            <ul class="row feature-list feature-list-sm">
+
+            <div class="row">
                 @foreach (var item in Model.Events)
                 {
-                    <li class="col-12 col-md-6 col-lg-4">
-                        <div class="card shadow-sm border-0 rounded">
-                            <a href="#">
-                                <img class="card-img-top rounded-top" src="@item.Image" alt="Card image cap">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-lg border-0 rounded overflow-hidden">
+                            <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Id">
+                                <img class="card-img-top rounded-top" src="@(!string.IsNullOrEmpty(item.Image) ? item.Image : "/img/default-event.jpg")" alt="Event image" style="height: 200px; width: 100%; object-fit: cover;">
                             </a>
-                            <div class="card-body">
-                                <a href="#">
-                                    <h4 class="card-title text-dark">@item.Title</h4>
-                                    <p class="card-text text-body">@item.Description</p>
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Id" class="text-decoration-none">
+                                    <h4 class="card-title text-dark fw-bold">@item.Title</h4>
+                                    <p class="card-text text-muted">
+                                        @(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)
+                                    </p>
                                 </a>
                             </div>
                             <div class="card-footer d-flex justify-content-between bg-light border-0">
-                                <div class="text-small">
-                                    <ul class="list-inline mb-0">
-                                        <li class="list-inline-item"><i class="icon-heart text-danger"></i> 221</li>
-                                        <li class="list-inline-item"><i class="icon-message text-primary"></i> 14</li>
-                                    </ul>
-                                </div>
-                                <a type="btn btn-success" asp-controller="Event" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">View</a>
+                                <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-sm btn-primary">View</a>
                             </div>
                         </div>
-                    </li>
+                    </div>
                 }
-            </ul>
+            </div>
         }
     </div>
 </section>
