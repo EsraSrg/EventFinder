@@ -1,6 +1,6 @@
 # EventFinder
 
-EventFinder is an ASP.NET MVC web application for discovering and managing technology events. It leverages IP geo-location to filter events based on user location and uses Cloudinary for cloud-based image storage. The project uses the Repository Pattern with Entity Framework Core, ensuring a clean and maintainable data access layer.
+ ASP.NET MVC web application for discovering and managing technology events. It leverages IP geo-location to filter events based on user location and uses Cloudinary for cloud-based image storage. The project uses the Repository Pattern with Entity Framework Core, ensuring a clean and maintainable data access layer.
 
 ## Key Features
 
