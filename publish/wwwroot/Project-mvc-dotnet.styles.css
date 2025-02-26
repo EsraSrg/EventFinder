@@ -1,0 +1,81 @@
+/* _content/Project-mvc-dotnet/Views/Shared/_Layout.cshtml.rz.scp.css */
+/* General Styles */
+body[b-6oadxvzq2k] {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Navbar */
+.navbar[b-6oadxvzq2k] {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand[b-6oadxvzq2k] {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-link[b-6oadxvzq2k] {
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover[b-6oadxvzq2k] {
+  color: #f8d210 !important;
+}
+
+/* Hero Section */
+.hero[b-6oadxvzq2k] {
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding:100px 0;
+  color: white;
+  width: 100%;
+}
+
+.hero .overlay[b-6oadxvzq2k] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.hero .container[b-6oadxvzq2k] {
+  position: relative;
+  z-index: 2;
+  max-width: 800px; /* İçeriğin genişliği ayarlanıyor */
+  padding: 20px; /* Daha fazla iç boşluk */
+}
+
+/* Event Cards */
+.card[b-6oadxvzq2k] {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover[b-6oadxvzq2k] {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons */
+.btn-primary[b-6oadxvzq2k] {
+  background-color: #1b6ec2;
+  border: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-primary:hover[b-6oadxvzq2k] {
+  background-color: #155a99;
+}
+
+/* Footer */
+footer[b-6oadxvzq2k] {
+  background-color: #343a40;
+  color: white;
+  padding: 15px;
+  font-size: 0.9rem;
+}
