@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddHttpClient();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IEventRepository,EventRepository>();
@@ -41,21 +41,27 @@ if (args.Length == 1 && args[0].ToLower() == "seeddata")
     // Seed.SeedData(app);
 }
 
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseAuthentication(); // Önce kimlik doğrulama
+app.UseAuthorization();  // Sonra yetkilendirme
+app.UseSession();        // Session kullanılıyorsa ekle
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    app.UseDeveloperExceptionPage(); // Geliştirme modunda hata detayları görmek için
+}
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
 
-app.UseRouting();
 
-app.UseAuthorization();
-app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,12 +13,14 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly IEventRepository _eventRepository;
     private readonly IConfiguration _config;
+    private readonly HttpClient _httpClient;
 
-    public HomeController(ILogger<HomeController> logger, IEventRepository eventRepository,IConfiguration config)
+    public HomeController(ILogger<HomeController> logger, IEventRepository eventRepository, IConfiguration config, HttpClient httpClient)
     {
         _logger = logger;
         _eventRepository = eventRepository;
-        _config=config;
+        _config = config;
+        _httpClient = httpClient;
     }
 
     public async Task<IActionResult> Index()
@@ -27,25 +29,31 @@ public class HomeController : Controller
         var homeViewModel = new HomeViewModel();
         try
         {
-            string url = "https://ipinfo.io?token="+_config.GetValue<string>("IpInfo:Token");
-            var info = new WebClient().DownloadString(url);
-            ipInfo = JsonConvert.DeserializeObject<IPInfo>(info); // taking json and turning into object
-            RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
-            ipInfo.Country = myRI1.EnglishName;
-            homeViewModel.City = ipInfo.City;
-            homeViewModel.State = ipInfo.Region;
-            if (homeViewModel.City !=null)
+            string url = "http://ipinfo.io?token=" + _config.GetValue<string>("IpInfo:Token");
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
             {
-                homeViewModel.Events = await _eventRepository.GetEventByCity(homeViewModel.City);
-            }
-            else
-            {
-                homeViewModel.Events = null;
+                var info = await response.Content.ReadAsStringAsync();
+                ipInfo = JsonConvert.DeserializeObject<IPInfo>(info); // taking json and turning into object
+                RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
+                ipInfo.Country = myRI1.EnglishName;
+                homeViewModel.City = ipInfo.City;
+                homeViewModel.State = ipInfo.Region;
+                
+                if (homeViewModel.City != null)
+                {
+                    homeViewModel.Events = await _eventRepository.GetEventByCity(homeViewModel.City);
+                }
+                else
+                {
+                    homeViewModel.Events = null;
+                }
             }
         }
         catch (Exception ex)
         {
-
+            _logger.LogError($"IPInfo API çağrısı başarısız: {ex.Message}");
             homeViewModel.Events = null;
         }
         return View(homeViewModel);
