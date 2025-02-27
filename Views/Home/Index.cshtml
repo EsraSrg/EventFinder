@@ -20,7 +20,7 @@
     <div class="container">
         @if (Model.Events == null || !Model.Events.Any())
         {
-            <h2 class="fw-light text-center text-danger">
+            <h2 class="fw-light text-center text-dark">
                 There are no tech events in your area! <a asp-controller="Account" asp-action="Register">Create one</a> now!
             </h2>
         }
