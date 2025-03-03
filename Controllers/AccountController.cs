@@ -71,9 +71,18 @@ public class AccountController : Controller
         var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
         if (newUserResponse.Succeeded)
+        {
 
             await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-        return RedirectToAction("Index", "Event");
+            return RedirectToAction("Index", "Event");
+        }
+        // Şifre doğrulama hatalarını ModelState'e ekle
+        foreach (var error in newUserResponse.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        return View(registerViewModel);
 
 
     }
@@ -85,5 +94,5 @@ public class AccountController : Controller
 
     }
 
- 
+
 }
