@@ -1,28 +1,49 @@
 # EventFinder
 
-ASP.NET MVC web application for discovering and managing technology events. It leverages IP geo-location to filter events based on user location and uses Cloudinary for cloud-based image storage. The project uses the Repository Pattern with Entity Framework Core, ensuring a clean and maintainable data access layer.
+ Web application for discovering and managing technology events. It leverages IP geo-location to filter events based on user location and uses Cloudinary for cloud-based image storage. The project uses the Repository Pattern with Entity Framework Core, ensuring a clean and maintainable data access layer.
 
+## 🌐 Live Domain
+ [https://eventfinder.runasp.net](https://eventfinder.runasp.net)  
+ 
 ## Key Features
-
-- **Event Discovery:** Find technology events near you using IP geo-location.
-- **Cloud Image Management:** Store and manage event images in the cloud with Cloudinary.
-- **Robust Architecture:** Built with the Repository Pattern and EF Core for efficient data handling.
-- **User Management:** Supports event creation, editing, and admin-level controls for managing events.
+| Feature | Description |
+|---------|-------------|
+| 📍 Smart Discovery | Automatic location detection using IP geolocation |
+| ☁️ Cloud Storage | Image management via Cloudinary integration |
+| 🛡️ Secure Access | Role-based authentication with ASP.NET Identity |
+| ⚙️ Clean Architecture | Repository pattern with EF Core data access |
 
 ## Technologies Used
 
-- ASP.NET MVC & .NET 8.0
-- C#
-- Entity Framework Core
-- Identity
-- Repository Pattern
-- IP Geolocation API
-- Cloudinary
+**Core Stack**  
+- ASP.NET MVC 8  
+- C# 
+- Microsoft SQL Server 2022  
+
+**Data Access**  
+- Entity Framework Core   
+- Repository Pattern  
+- Dependency Injection  
+
+**Services & Integration**  
+- ASP.NET Core Identity  
+- [IP Geolocation API](https://ipinfo.io)  
+- [Cloudinary](https://cloudinary.com) Media Management  
+
+**Infrastructure**  
+- [MonsterASP Hosting](https://www.monsterasp.net)
+-  HTTPS/SSL Encryption
 
   ## Getting Started
+### Prerequisites
+- .NET 8 SDK
+- SQL Server 2022
+- Cloudinary account 
+- IPinfo API token
 
-1. **Clone the Repository:**
+### Installation
 
+1. **Clone repository**
    ```bash
    git clone https://github.com/EsraSrg/EventFinder.git
    cd EventFinder
@@ -36,10 +57,15 @@ ASP.NET MVC web application for discovering and managing technology events. It l
 
    3.**Configure Settings:**
 
-- Update your database connection string in appsettings.json and configure Cloudinary settings.
+- Update your database connection string in appsettings.json and configure Cloudinary and IPInfo settings.
+  
+   4.**Run the database migrations:**
 
-  4.**Run the App:**
+  ```bash
+  dotnet ef database update
+  ```
+  5.**Run the App:**
 
-```bash
-dotnet run
-```
+  ```bash
+  dotnet run
+  ```
