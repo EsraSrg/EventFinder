@@ -23,39 +23,92 @@ public class HomeController : Controller
         _httpClient = httpClient;
     }
 
-    public async Task<IActionResult> Index()
+     public async Task<IActionResult> Index()
     {
         var ipInfo = new IPInfo();
         var homeViewModel = new HomeViewModel();
+        
         try
         {
-            string url = "http://ipinfo.io?token=" + _config.GetValue<string>("IpInfo:Token");
-            var response = await _httpClient.GetAsync(url);
+            // Get client IP address 
+            var clientIp = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            if (response.IsSuccessStatusCode)
+            // Check for X-Forwarded-For header (common proxy header)
+            if (HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var forwardedFor))
             {
-                var info = await response.Content.ReadAsStringAsync();
-                ipInfo = JsonConvert.DeserializeObject<IPInfo>(info); // taking json and turning into object
-                RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
-                ipInfo.Country = myRI1.EnglishName;
-                homeViewModel.City = ipInfo.City;
-                homeViewModel.State = ipInfo.Region;
-                
-                if (homeViewModel.City != null)
+                clientIp = forwardedFor.FirstOrDefault()?.Split(',').FirstOrDefault()?.Trim();
+            }
+
+            // Fallback to other common proxy headers
+            if (string.IsNullOrEmpty(clientIp))
+            {
+                foreach (var header in new[] { "CF-Connecting-IP", "X-Real-IP" })
                 {
-                    homeViewModel.Events = await _eventRepository.GetEventByCity(homeViewModel.City);
+                    if (HttpContext.Request.Headers.TryGetValue(header, out var headerValue))
+                    {
+                        clientIp = headerValue.FirstOrDefault();
+                        if (!string.IsNullOrEmpty(clientIp)) break;
+                    }
+                }
+            }
+
+            _logger.LogInformation($"Detected client IP: {clientIp}");
+
+            if (!string.IsNullOrEmpty(clientIp))
+            {
+                // Use client-specific endpoint
+                string url = $"https://ipinfo.io/{clientIp}/json?token={_config.GetValue<string>("IpInfo:Token")}";
+                var response = await _httpClient.GetAsync(url);
+
+                // Log API response details
+                _logger.LogInformation($"IPInfo API call: {url}");
+                _logger.LogInformation($"API Status Code: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var info = await response.Content.ReadAsStringAsync();
+                    _logger.LogInformation($"Raw API response: {info}");
+                    
+                    ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
+                    
+                    if (!string.IsNullOrEmpty(ipInfo.Country))
+                    {
+                        RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
+                        ipInfo.Country = myRI1.EnglishName;
+                    }
+
+                    homeViewModel.City = ipInfo.City;
+                    homeViewModel.State = ipInfo.Region;
+
+                    if (!string.IsNullOrEmpty(homeViewModel.City))
+                    {
+                        homeViewModel.Events = await _eventRepository.GetEventByCity(homeViewModel.City);
+                    }
                 }
                 else
                 {
-                    homeViewModel.Events = null;
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"IPInfo API error: {response.StatusCode} - {errorContent}");
                 }
+            }
+            else
+            {
+                _logger.LogWarning("Could not determine client IP address");
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            _logger.LogError($"Network error: {httpEx.Message}");
+            if (httpEx.InnerException != null)
+            {
+                _logger.LogError($"Inner exception: {httpEx.InnerException.Message}");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError($"IPInfo API çağrısı başarısız: {ex.Message}");
-            homeViewModel.Events = null;
+            _logger.LogError($"General error: {ex.Message}");
         }
+
         return View(homeViewModel);
     }
 
